@@ -9,11 +9,37 @@
       <a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-secondary transition-colors duration-200" href="#">Aide</a>
     </div>
   </div>
+
   <div class="flex items-center gap-md">
-    <button class="material-symbols-outlined text-on-surface-variant p-sm hover:bg-surface-variant rounded-full transition-all">language</button>
-    <div class="flex items-center gap-sm bg-surface-container-high rounded-full px-sm py-xs border border-outline-variant hover:shadow-md transition-all cursor-pointer">
-      <span class="material-symbols-outlined">menu</span>
-      <span class="material-symbols-outlined text-on-surface-variant" style="font-variation-settings: 'FILL' 1">account_circle</span>
+    <!-- Language Dropdown -->
+    <div x-data="{ open: false }" class="relative">
+      <button 
+        @click="open = !open"
+        class="material-symbols-outlined text-on-surface-variant p-sm hover:bg-surface-variant rounded-full transition-all flex items-center gap-1"
+        :class="{ 'bg-surface-variant': open }">
+        language
+      </button>
+
+      <!-- Dropdown Menu -->
+      <div 
+        x-show="open"
+        @click.outside="open = false"
+        class="absolute right-0 mt-2 w-48 bg-surface-container rounded-2xl shadow-xl border border-outline-variant py-2 z-50 overflow-hidden">
+        
+        <a href="#" class="flex items-center gap-3 px-5 py-3 hover:bg-surface-variant transition-colors">
+          <span class="text-xl">🇫🇷</span>
+          <span class="font-medium">Français</span>
+        </a>
+        
+        <a href="#" class="flex items-center gap-3 px-5 py-3 hover:bg-surface-variant transition-colors">
+          <span class="text-xl">🇬🇧</span>
+          <span class="font-medium">English</span>
+        </a>
+      </div>
     </div>
+
+    <button class="hidden md:flex bg-secondary-container text-on-secondary-container rounded-lg p-3 text-label-sm font-label-sm items-center justify-center gap-xs">
+      DECOUVRIR PREMIUM
+    </button>
   </div>
 </nav>
