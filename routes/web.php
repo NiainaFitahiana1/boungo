@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FormulaireController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -22,3 +24,8 @@ Route::prefix('crud-api')->group(function () {
     Route::apiResource('applies', \App\Http\Controllers\Crud\ApplyController::class);
     Route::apiResource('notifications', \App\Http\Controllers\Crud\NotificationController::class);
 });
+
+
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/create-annonce', [FormulaireController::class, 'show'])->name('formulaire');
