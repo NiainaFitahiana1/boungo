@@ -4,55 +4,85 @@
     <p class="text-label-md font-label-md text-on-surface-variant mt-xs">Trouvez votre foyer idéal</p>
   </div>
   <div class="p-lg space-y-xl">
+    <!-- Barre de recherche -->
     <div class="space-y-md">
       <div class="flex items-center gap-sm text-primary">
-        <span class="material-symbols-outlined">payments</span>
-        <span class="font-label-md text-label-md uppercase tracking-wider">Prix Max</span>
+        <span class="material-symbols-outlined">search</span>
+        <span class="font-label-md text-label-md uppercase tracking-wider">Recherche</span>
       </div>
-      <div class="relative w-full h-2 bg-surface-variant rounded-full mt-lg">
-        <div class="absolute left-0 top-0 h-full w-2/3 bg-secondary-container rounded-full"></div>
-        <div class="absolute left-2/3 top-1/2 -translate-y-1/2 w-5 h-5 bg-on-secondary-fixed-variant rounded-full shadow-lg cursor-pointer ring-4 ring-surface"></div>
-      </div>
-      <div class="flex justify-between text-label-sm font-label-sm text-on-surface-variant">
-        <span>200€</span>
-        <span>1200€+</span>
+      <div class="relative group">
+        <span class="absolute left-lg top-1/2 -translate-y-1/2 material-symbols-outlined text-outline text-[18px]">search</span>
+        <input x-model="filters.search" 
+               @input="filterDebounce"
+               class="w-full pl-lg pr-lg py-md bg-surface-container-highest border-none rounded-xl shadow-sm text-body-sm font-body-sm focus:ring-2 focus:ring-secondary-container outline-none transition-all group-hover:shadow-md" 
+               placeholder="Rechercher un logement..." 
+               type="text" />
       </div>
     </div>
+
+    <!-- Tri par prix -->
     <div class="space-y-md">
       <div class="flex items-center gap-sm text-primary">
-        <span class="material-symbols-outlined">home_work</span>
-        <span class="font-label-md text-label-md uppercase tracking-wider">Type de bien</span>
+        <span class="material-symbols-outlined">trending_down</span>
+        <span class="font-label-md text-label-md uppercase tracking-wider">Tri</span>
       </div>
-      <div class="grid grid-cols-2 gap-sm">
-        <button class="bg-secondary-container text-on-secondary-container rounded-lg p-3 text-label-sm font-label-sm flex items-center justify-center gap-xs">Appartement</button>
-        <button class="bg-surface-variant text-on-surface-variant rounded-lg p-3 text-label-sm font-label-sm flex items-center justify-center gap-xs">Maison</button>
-        <button class="bg-surface-variant text-on-surface-variant rounded-lg p-3 text-label-sm font-label-sm flex items-center justify-center gap-xs">Chambre</button>
-        <button class="bg-surface-variant text-on-surface-variant rounded-lg p-3 text-label-sm font-label-sm flex items-center justify-center gap-xs">Coloc</button>
-      </div>
+      <button @click="filters.sort = filters.sort === 'price_asc' ? '' : 'price_asc'; applyFilters()"
+              :class="{ 'bg-primary text-on-primary': filters.sort === 'price_asc' }"
+              class="w-full px-lg py-md bg-surface-container-high text-on-surface-variant rounded-xl whitespace-nowrap text-label-sm font-label-sm flex items-center justify-center gap-xs hover:bg-surface-variant transition-all">
+        <span class="material-symbols-outlined text-[16px]">trending_down</span>
+        Moins cher
+      </button>
     </div>
+
+    <!-- Type d'annonce -->
     <div class="space-y-md">
       <div class="flex items-center gap-sm text-primary">
-        <span class="material-symbols-outlined">location_on</span>
-        <span class="font-label-md text-label-md uppercase tracking-wider">Localisation</span>
+        <span class="material-symbols-outlined">home</span>
+        <span class="font-label-md text-label-md uppercase tracking-wider">Type</span>
       </div>
-      <input class="w-full bg-surface-container-highest border-none rounded-lg p-md text-body-sm font-body-sm focus:ring-2 focus:ring-secondary-container outline-none" placeholder="Ville ou quartier" type="text" />
+      <div class="space-y-xs">
+        <button @click="filters.type = filters.type === 'location' ? '' : 'location'; applyFilters()"
+                :class="{ 'bg-primary text-on-primary': filters.type === 'location' }"
+                class="w-full px-lg py-md bg-surface-container-high text-on-surface-variant rounded-xl text-label-sm font-label-sm flex items-center gap-xs hover:bg-surface-variant transition-all">
+          <span class="material-symbols-outlined text-[16px]">home</span>
+          Location
+        </button>
+        <button @click="filters.type = filters.type === 'colocation' ? '' : 'colocation'; applyFilters()"
+                :class="{ 'bg-primary text-on-primary': filters.type === 'colocation' }"
+                class="w-full px-lg py-md bg-surface-container-high text-on-surface-variant rounded-xl text-label-sm font-label-sm flex items-center gap-xs hover:bg-surface-variant transition-all">
+          <span class="material-symbols-outlined text-[16px]">group</span>
+          Colocation
+        </button>
+      </div>
     </div>
+
+    <!-- Statut -->
     <div class="space-y-md">
       <div class="flex items-center gap-sm text-primary">
-        <span class="material-symbols-outlined">bed</span>
-        <span class="font-label-md text-label-md uppercase tracking-wider">Chambres</span>
+        <span class="material-symbols-outlined">check_circle</span>
+        <span class="font-label-md text-label-md uppercase tracking-wider">Statut</span>
       </div>
-      <div class="flex gap-xs">
-        <button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-label-md font-label-md hover:bg-secondary-container transition-all">1+</button>
-        <button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-label-md font-label-md hover:bg-secondary-container transition-all">2+</button>
-        <button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-label-md font-label-md hover:bg-secondary-container transition-all">3+</button>
-        <button class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-label-md font-label-md hover:bg-secondary-container transition-all">4+</button>
-      </div>
+      <button @click="filters.status = filters.status === 'active' ? '' : 'active'; applyFilters()"
+              :class="{ 'bg-primary text-on-primary': filters.status === 'active' }"
+              class="w-full px-lg py-md bg-surface-container-high text-on-surface-variant rounded-xl text-label-sm font-label-sm flex items-center justify-center gap-xs hover:bg-surface-variant transition-all">
+        <span class="material-symbols-outlined text-[16px]">check_circle</span>
+        Disponible
+      </button>
     </div>
+
+    <!-- Badge du nombre de filtres actifs -->
+    <template x-if="Object.values(filters).some(v => v)">
+      <div class="text-body-sm text-outline">
+        <span class="inline-block px-sm py-xs bg-secondary-fixed text-on-secondary-fixed-variant rounded-full">
+          <span x-text="`${Object.values(filters).filter(v => v).length} filtre(s) actif(s)`"></span>
+        </span>
+      </div>
+    </template>
   </div>
   <div class="mt-auto p-lg border-t border-outline-variant">
-    <button class="w-full py-md bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:bg-secondary transition-all flex items-center justify-center gap-sm">
-      <span class="material-symbols-outlined">tune</span>
+    <button @click="resetFilters()"
+            class="w-full py-md bg-primary text-on-primary rounded-xl font-label-md text-label-md hover:bg-secondary transition-all flex items-center justify-center gap-sm">
+      <span class="material-symbols-outlined">close</span>
       Réinitialiser les filtres
     </button>
   </div>

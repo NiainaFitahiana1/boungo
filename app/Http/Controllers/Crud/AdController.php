@@ -8,9 +8,41 @@ use Illuminate\Http\Request;
 
 class AdController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ads = Ad::with('images')->paginate(12);
+        $query = Ad::with('images');
+
+        // Filtrer par recherche (titre, description, ville, adresse)
+        if ($request->has('search') && $request->search) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%$search%")
+                  ->orWhere('description', 'like', "%$search%")
+                  ->orWhere('city', 'like', "%$search%")
+                  ->orWhere('address', 'like', "%$search%");
+            });
+        }
+
+        // Filtrer par type (location ou colocation)
+        if ($request->has('type') && $request->type) {
+            $query->where('type', $request->type);
+        }
+
+        // Filtrer par statut (active, rented, archived)
+        if ($request->has('status') && $request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Tri par prix
+        if ($request->has('sort') && $request->sort === 'price') {
+            $order = $request->has('order') && $request->order === 'desc' ? 'desc' : 'asc';
+            $query->orderBy('price', $order);
+        } else {
+            // Tri par défaut: plus récent d'abord
+            $query->orderBy('created_at', 'desc');
+        }
+
+        $ads = $query->paginate(12);
         return response()->json($ads);
     }
 

@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+Route::get('/help', function () {
+    return view('email.index');
+})->name('help');
+
+Route::get('/create-annonce', [FormulaireController::class, 'show'])->name('formulaire');
 
 // Page unique pour CRUD AJAX
 Route::get('/crud', function () {
@@ -28,4 +33,3 @@ Route::prefix('crud-api')->group(function () {
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::get('/create-annonce', [FormulaireController::class, 'show'])->name('formulaire');

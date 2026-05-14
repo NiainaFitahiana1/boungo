@@ -31,6 +31,10 @@ class Ad extends Model
         'status',
     ];
 
+    protected $attributes = [
+        'status' => 'active',
+    ];
+
     protected $casts = [
         'price' => 'decimal:2',
         'latitude' => 'decimal:7',
